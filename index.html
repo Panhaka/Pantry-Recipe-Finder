@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pantry — find recipes from what you have</title>
+<meta name="description" content="Search recipes by ingredient, using what's already in your kitchen." />
+
+<!-- Tailwind CDN (Play CDN — fine for learning/small projects; swap for the Tailwind CLI build in a production project) -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          cream: '#F7F2E7',
+          card: '#FDFBF5',
+          ink: '#24261F',
+          rust: '#C1432E',
+          'rust-dark': '#9E351F',
+          sage: '#7C8B6F',
+          gold: '#D4A017',
+        },
+        fontFamily: {
+          display: ['"Fraunces"', 'serif'],
+          body: ['"Work Sans"', 'sans-serif'],
+        },
+      },
+    },
+  };
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="bg-cream text-ink font-body antialiased">
+
+  <!-- Header -->
+  <header class="border-b-2 border-ink/10">
+    <div class="max-w-5xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="font-display text-2xl font-semibold tracking-tight">Pantry</div>
+      <nav class="flex items-center gap-1 text-sm font-medium">
+        <button id="tab-search" class="tab-btn px-4 py-2 rounded-full transition-colors" data-tab="search">Search</button>
+        <button id="tab-favorites" class="tab-btn px-4 py-2 rounded-full transition-colors" data-tab="favorites">Saved <span id="fav-count" class="text-rust"></span></button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero / Search -->
+  <section class="max-w-5xl mx-auto px-6 pt-14 pb-10">
+    <h1 class="font-display text-4xl sm:text-5xl leading-[1.1] max-w-xl">
+      Cook with what's already in your kitchen.
+    </h1>
+    <p class="mt-4 text-ink/70 max-w-md">
+      Add a few ingredients you have on hand. Pantry finds recipes that use them.
+    </p>
+
+    <form id="search-form" class="mt-8">
+      <div class="flex gap-2 max-w-xl">
+        <input
+          id="ingredient-input"
+          type="text"
+          placeholder="e.g. chicken, spinach, garlic"
+          class="flex-1 bg-card border-2 border-ink/15 rounded-lg px-4 py-3 text-base placeholder:text-ink/40 focus:outline-none focus:border-rust transition-colors"
+          autocomplete="off"
+        />
+        <button type="submit" class="bg-rust hover:bg-rust-dark text-cream font-medium px-6 py-3 rounded-lg transition-colors">
+          Find
+        </button>
+      </div>
+      <div id="ingredient-tags" class="flex flex-wrap gap-2 mt-3"></div>
+      <p class="text-xs text-ink/50 mt-2">Press Enter after each ingredient to add it. Recipes are matched using the first ingredient you add.</p>
+    </form>
+  </section>
+
+  <!-- Status line -->
+  <div class="max-w-5xl mx-auto px-6">
+    <p id="status-line" class="text-sm text-ink/60 border-t border-ink/10 pt-4 hidden"></p>
+  </div>
+
+  <!-- Results grid -->
+  <main class="max-w-5xl mx-auto px-6 pb-24 pt-6">
+    <div id="results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <div id="empty-state" class="text-center py-20 text-ink/40">
+      <p class="font-display text-xl text-ink/60">Nothing here yet</p>
+      <p class="mt-2 text-sm">Add an ingredient above to start finding recipes.</p>
+    </div>
+  </main>
+
+  <!-- Recipe detail modal -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-ink/50 backdrop-blur-sm hidden z-40" role="presentation"></div>
+  <div id="modal" class="fixed inset-0 z-50 hidden items-start sm:items-center justify-center p-0 sm:p-6 overflow-y-auto">
+    <div class="bg-card w-full sm:max-w-2xl sm:rounded-2xl shadow-2xl relative min-h-screen sm:min-h-0 my-0 sm:my-auto">
+      <button id="modal-close" aria-label="Close" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-ink/5 hover:bg-ink/10 flex items-center justify-center text-lg transition-colors z-10">✕</button>
+      <div id="modal-content" class="p-6 sm:p-8"></div>
+    </div>
+  </div>
+
+  <footer class="border-t-2 border-ink/10 py-8">
+    <div class="max-w-5xl mx-auto px-6 text-sm text-ink/50 flex flex-col sm:flex-row justify-between gap-2">
+      <span>Pantry — a recipe finder built with HTML, Tailwind CSS and vanilla JavaScript.</span>
+      <span>Recipe data from TheMealDB</span>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
